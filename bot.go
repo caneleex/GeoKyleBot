@@ -10,6 +10,7 @@ import (
 	"github.com/disgoorg/disgo/gateway"
 	"github.com/disgoorg/log"
 	"github.com/disgoorg/snowflake/v2"
+	"golang.org/x/exp/slices"
 	"os"
 	"os/signal"
 	"syscall"
@@ -51,17 +52,11 @@ func onButton(event *events.ComponentInteractionCreate) {
 	member := event.Member()
 	buttonId := event.Data.CustomID()
 	roleId, _ := snowflake.Parse(buttonId.String())
-	var hasRole bool
-	for _, role := range member.RoleIDs {
-		if role == roleId {
-			hasRole = true
-		}
-	}
 	rest := event.Client().Rest()
 	guildId := *event.GuildID()
 	userId := member.User.ID
 	var err error
-	if hasRole {
+	if slices.Contains(member.RoleIDs, roleId) {
 		err = rest.RemoveMemberRole(guildId, userId, roleId)
 	} else {
 		err = rest.AddMemberRole(guildId, userId, roleId)
