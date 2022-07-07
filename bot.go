@@ -26,7 +26,7 @@ func main() {
 	log.Info("disgo version: ", disgo.Version)
 
 	client, err := disgo.New(os.Getenv("GEOKYLE_TOKEN"),
-		bot.WithGatewayConfigOpts(gateway.WithGatewayIntents(discord.GatewayIntentGuildMessages)),
+		bot.WithGatewayConfigOpts(gateway.WithIntents(gateway.IntentGuildMessages)),
 		bot.WithCacheConfigOpts(cache.WithCacheFlags(cache.FlagsNone)),
 		bot.WithEventListeners(&events.ListenerAdapter{
 			OnComponentInteraction: onButton,
